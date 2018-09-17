@@ -24,18 +24,23 @@ public class UDPAppender extends AbstractAppender {
 
 	private String host;
 	private Integer port;
+	private String ip;
+	private String projectName;
 
 	protected UDPAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions,
-			String host, Integer port) {
+			String host, Integer port,String ip,String projectName) {
 		super(name, filter, layout, ignoreExceptions);
 		this.host = host;
 		this.port = port;
+		this.ip = ip;
+		this.projectName = projectName;
 	}
 
 	@Override
 	public void append(LogEvent event) {
 		final byte[] bytes = getLayout().toByteArray(event);
 		String msg = new String(bytes);
+		msg = String.format("%s-%s-%s",projectName,ip,msg);
 		DatagramPacket dp;
 		try {
 			dp = parseMsg(msg, host, port);
@@ -47,8 +52,12 @@ public class UDPAppender extends AbstractAppender {
 	}
 
 	@PluginFactory
-	public static UDPAppender createAppender(@PluginAttribute("name") String name, @PluginAttribute("host") String host,
-			@PluginAttribute("port") Integer port, @PluginElement("Filter") final Filter filter,
+	public static UDPAppender createAppender(@PluginAttribute("name") String name, 
+			@PluginAttribute("host") String host,
+			@PluginAttribute("port") Integer port,
+			@PluginAttribute("ip") String ip,
+			@PluginAttribute("projectname") String projectName,
+			@PluginElement("Filter") final Filter filter,
 			@PluginElement("Layout") Layout<? extends Serializable> layout,
 			@PluginAttribute("ignoreExceptions") boolean ignoreExceptions) {
 		if (StringUtils.isBlank(name)) {
@@ -64,7 +73,7 @@ public class UDPAppender extends AbstractAppender {
 			layout = PatternLayout.createDefaultLayout();
 		}
 
-		return new UDPAppender(name, filter, layout, ignoreExceptions, host, port);
+		return new UDPAppender(name, filter, layout, ignoreExceptions, host, port,ip,projectName);
 	}
 	
 	private static void startSending(DatagramPacket msg) throws IOException, InterruptedException {

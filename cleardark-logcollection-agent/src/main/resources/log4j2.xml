@@ -129,7 +129,7 @@
 		</RollingRandomAccessFile>
 		
 		
-		<UDPAppender name="UDPAppenderTest" host="127.0.0.1" port="9999">
+		<UDPAppender name="UDPAppenderTest" host="127.0.0.1" port="9999" projectname="testagent" ip="localhost">
 			<PatternLayout>
 				<pattern>%-d{yyyy-MM-dd HH:mm:ss} [ %F:%L ] - [ %p ] %m%n</pattern>
 			</PatternLayout>

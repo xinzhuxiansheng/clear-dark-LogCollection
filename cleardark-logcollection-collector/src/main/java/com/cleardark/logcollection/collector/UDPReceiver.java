@@ -28,9 +28,9 @@ public class UDPReceiver {
 				int senderPort = msg.getPort();
 				InetAddress senderAddr = msg.getAddress();
 
-				//System.out.printf("发送端 地址和端口 -> (%s:%d)\n", senderAddr.getHostAddress(), senderPort);
+				System.out.printf("发送端 地址和端口 -> (%s:%d)\n", senderAddr.getHostAddress(), senderPort);
 
-				//System.out.println("发送端 发送的消息 -> " + msgBody + "\n");
+				System.out.println("发送端 发送的消息 -> " + msgBody + "\n");
 			}
 		}
 		System.out.println("接收端已经关闭。");
